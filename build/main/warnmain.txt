@@ -1,0 +1,19 @@
+missing module named resource - imported by posix, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named posix - imported by os, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named _posixsubprocess - imported by subprocess, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named 'org.python' - imported by pickle, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw, xml.sax
+missing module named readline - imported by cmd, code, pdb, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+excluded module named _frozen_importlib - imported by importlib, importlib.abc, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named _winreg - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named _scproxy - imported by urllib.request
+missing module named java - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named 'java.lang' - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw, xml.sax._exceptions
+missing module named vms_lib - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named termios - imported by tty, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw, getpass
+missing module named grp - imported by shutil, tarfile, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named pwd - imported by posixpath, shutil, tarfile, http.server, webbrowser, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw, netrc, getpass
+missing module named _dummy_threading - imported by dummy_threading, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named org - imported by copy, F:\²å¼þ\×ÀÃæµ¯Ä»\main.pyw
+missing module named urlparse - imported by ws4py.compat
+missing module named OpenSSL - imported by ws4py.websocket

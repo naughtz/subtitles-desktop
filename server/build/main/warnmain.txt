@@ -1,0 +1,44 @@
+missing module named 'multiprocessing.forking' - imported by e:\python\lib\site-packages\PyInstaller\loader\rthooks\pyi_rth_multiprocessing.py
+missing module named multiprocessing.get_context - imported by multiprocessing, multiprocessing.pool, multiprocessing.managers, multiprocessing.sharedctypes
+missing module named multiprocessing.TimeoutError - imported by multiprocessing, multiprocessing.pool
+missing module named multiprocessing.BufferTooShort - imported by multiprocessing, multiprocessing.connection
+missing module named multiprocessing.AuthenticationError - imported by multiprocessing, multiprocessing.connection
+missing module named multiprocessing.set_start_method - imported by multiprocessing, multiprocessing.spawn
+missing module named multiprocessing.get_start_method - imported by multiprocessing, multiprocessing.spawn
+missing module named multiprocessing.SimpleQueue - imported by multiprocessing, concurrent.futures.process
+missing module named resource - imported by posix, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named posix - imported by os, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named _posixsubprocess - imported by subprocess, multiprocessing.util, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named readline - imported by cmd, code, pdb, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+excluded module named _frozen_importlib - imported by importlib, importlib.abc, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named _winreg - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named _scproxy - imported by urllib.request
+missing module named java - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named 'java.lang' - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py, xml.sax._exceptions
+missing module named vms_lib - imported by platform, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named termios - imported by tty, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py, getpass
+missing module named urllib.urlencode - imported by urllib, tornado.httputil, tornado.web
+missing module named grp - imported by shutil, tarfile, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named _dummy_threading - imported by dummy_threading, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named pwd - imported by posixpath, shutil, tarfile, http.server, webbrowser, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py, netrc, getpass
+missing module named org - imported by pickle, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py
+missing module named 'org.python' - imported by copy, F:\²å¼þ\×ÀÃæµ¯Ä»\server\main.py, xml.sax
+missing module named urlparse - imported by tornado.escape, tornado.httputil, tornado.web, tornado.simple_httpclient, tornado.websocket
+missing module named monotonic - imported by tornado.platform.auto
+missing module named monotime - imported by tornado.platform.auto
+missing module named fcntl - imported by tornado.platform.posix, asyncio.unix_events
+missing module named backports - imported by tornado.netutil
+missing module named _curses - imported by curses, curses.has_key
+missing module named colorama - imported by tornado.log
+missing module named trollius - imported by tornado.platform.asyncio
+missing module named asyncio.DefaultEventLoopPolicy - imported by asyncio, asyncio.events
+missing module named __builtin__ - imported by tornado.gen
+missing module named backports_abc - imported by tornado.gen
+missing module named singledispatch - imported by tornado.gen
+missing module named httplib - imported by tornado.httputil
+missing module named Cookie - imported by tornado.httputil, tornado.web
+missing module named cStringIO - imported by tornado.template
+missing module named copy_reg - imported by cStringIO
+missing module named htmlentitydefs - imported by tornado.escape
+missing module named thread - imported by tornado.ioloop
