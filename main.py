@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
-from PyQt5.QtGui import QBrush,QPainter,QPainterPath,QColor,QFont,QPen,QFontMetrics,QIcon,QPixmap,QIntValidator
+from PyQt5.QtGui import QFontDatabase,QBrush,QPainter,QPainterPath,QColor,QFont,QPen,QFontMetrics,QIcon,QPixmap,QIntValidator
 from PyQt5.QtCore import QPropertyAnimation,QTimer,Qt
 import win32gui
 import win32con
@@ -10,6 +10,7 @@ import threading
 import qrc_resources
 import json
 
+#弹幕类
 class Danmu(QLabel):
 	def __init__(self,parent,dmtext,dmcolor,dmstartx,dmstarty,dmfont="Microsoft YaHei"):
 		super(Danmu,self).__init__(parent)
@@ -53,7 +54,7 @@ class Danmu(QLabel):
 		painter.fillPath(path,QBrush(QColor(255,255,255)))
 		painter.restore()
 		QLabel.paintEvent(self,event)
-
+#弹幕窗口类(隐形窗口)
 class DanmuWindow(QWidget):
 	def __init__(self,parent):
 		super(DanmuWindow,self).__init__(parent)
@@ -77,12 +78,13 @@ class DanmuWindow(QWidget):
 
 class MainWindow(QMainWindow):
 
-	dmSignal = QtCore.pyqtSignal(str)
-	room = ''
+	dmSignal = QtCore.pyqtSignal(str) #用于跨线程传递信号
+	room = '' #房间号
 
+	#接收到信号后的处理
 	def handle(self,content):
 		content = json.loads(content)
-		if content['type']=='danmu':
+		if content['type']=='danmu': #如果是弹幕，则选择合适的位置显示弹幕
 			color = content['color']
 			message = content['text']
 			for i in range(0,len(self.danmuLineFlag)):
@@ -90,9 +92,9 @@ class MainWindow(QMainWindow):
 					self.danmuWindow.addDanmu(message,color,20+80*i)
 					self.danmuLineFlag[i] = 1;
 					break
-		elif content['type']=='informn':
+		elif content['type']=='informn': #如果是人数通知，更新状态栏
 			self.statusBar().showMessage('已连接: '+content['n'])
-		elif content['type']=='room':
+		elif content['type']=='room': #如果实返回房间号信息，显示当前房间号或不存在房间
 			if content['n']!='err':
 				self.room = str(content['n'])
 				self.connectStatusLabel.setText('房间号: '+self.room)
@@ -110,15 +112,15 @@ class MainWindow(QMainWindow):
 		super().__init__()
 		self.initUI()
 		self.danmuWindow = DanmuWindow(self) #创建弹幕窗口
-		self.dmSignal.connect(self.handle)
-		self.danmuColor = 'white'
+		self.dmSignal.connect(self.handle) #信号连接
+		self.danmuColor = 'white' #默认白色弹幕
 		#弹幕冷却
 		self.danmuLineFlag = [0]*13
 		self.danmuCoolTime = [0]*13
 		self.coolTimer = QTimer()
 		self.coolTimer.timeout.connect(self.coolDownCount)
 		self.coolTimer.start(500)
-
+	#弹幕冷却函数
 	def coolDownCount(self):
 		for i in range(0,len(self.danmuLineFlag)):
 			if self.danmuLineFlag[i]==1:
@@ -129,11 +131,11 @@ class MainWindow(QMainWindow):
 
 
 	def initUI(self):
-		self.setWindowTitle('桌面弹幕')
-		self.setWindowIcon(QIcon(':/logo.png'))
+		self.setWindowTitle('桌面弹幕') #窗口名
+		self.setWindowIcon(QIcon(':/logo.png')) #窗口图标
 		self.setFixedSize(600,360) #设置窗口大小
-		self.statusBar().showMessage('未连接')
-		self.setWindowFlags(self.windowFlags()& ~Qt.WindowMinimizeButtonHint)
+		self.statusBar().showMessage('未连接') #初始状态为未连接
+		self.setWindowFlags(self.windowFlags()& ~Qt.WindowMinimizeButtonHint) #标题栏仅显示关闭按钮
 
 		#qss加载
 		with open('./src/style.qss') as f:
@@ -149,71 +151,64 @@ class MainWindow(QMainWindow):
 	#创建按钮
 	def createButton(self):
 		self.connectButton = QPushButton('连接服务器',self)
-		self.connectButton.setFont(QFont("Microsoft YaHei",15))
+		self.connectButton.setObjectName("connectButton")
 		self.connectButton.move(50,50)
 		self.connectButton.setFixedSize(200,75)
 		self.connectButton.clicked.connect(self.connectServer)
 
 		self.testButton = QPushButton('发送',self)
-		self.testButton.setFont(QFont("Microsoft YaHei",10))
-		self.testButton.move(350,227)
-		self.testButton.setFixedSize(50,30)
+		self.testButton.move(350,250)
+		self.testButton.setFixedSize(60,60)
 		self.testButton.setEnabled(False)
 		self.testButton.clicked.connect(self.sendDanmu)
 
 		self.createRoomButton = QPushButton('创建',self)
-		self.createRoomButton.setFont(QFont("Microsoft YaHei",10))
-		self.createRoomButton.move(250,200)
-		self.createRoomButton.setFixedSize(50,30)
+		self.createRoomButton.move(50,180)
+		self.createRoomButton.setFixedSize(95,60)
 		self.createRoomButton.setEnabled(False)
 		self.createRoomButton.clicked.connect(self.createRoom)
 
 		self.joinRoomButton = QPushButton('加入',self)
-		self.joinRoomButton.setFont(QFont("Microsoft YaHei",10))
-		self.joinRoomButton.move(320,200)
-		self.joinRoomButton.setFixedSize(50,30)
+		self.joinRoomButton.move(155,180)
+		self.joinRoomButton.setFixedSize(95,60)
 		self.joinRoomButton.setEnabled(False)
 		self.joinRoomButton.clicked.connect(self.joinRoom)
 
 		self.miniButton = QPushButton('最小化到托盘',self)
+		self.miniButton.move(450,120)
+		self.miniButton.setFixedSize(140,60)
 		self.miniButton.clicked.connect(self.miniWindow)
 
 		self.colorButtonGroup = QButtonGroup(self)
 
 		self.colorButtonWhite = QRadioButton('白',self)
-		self.colorButtonWhite.setFont(QFont("Microsoft YaHei",10))
-		self.colorButtonWhite.move(50,260)
+		self.colorButtonWhite.move(50,280)
 		self.colorButtonWhite.setChecked(True)
 		self.colorButtonGroup.addButton(self.colorButtonWhite,0)
 		self.colorButtonWhite.clicked.connect(self.changeColor)
 
 		self.colorButtonRed = QRadioButton('红',self)
-		self.colorButtonRed.setFont(QFont("Microsoft YaHei",10))
-		self.colorButtonRed.move(100,260)
+		self.colorButtonRed.move(100,280)
 		self.colorButtonGroup.addButton(self.colorButtonRed,1)
 		self.colorButtonRed.clicked.connect(self.changeColor)
 
 		self.colorButtonYellow = QRadioButton('黄',self)
-		self.colorButtonYellow.setFont(QFont("Microsoft YaHei",10))
-		self.colorButtonYellow.move(150,260)
+		self.colorButtonYellow.move(150,280)
 		self.colorButtonGroup.addButton(self.colorButtonYellow,2)
 		self.colorButtonYellow.clicked.connect(self.changeColor)
 
 		self.colorButtonGreen = QRadioButton('绿',self)
-		self.colorButtonGreen.setFont(QFont("Microsoft YaHei",10))
-		self.colorButtonGreen.move(200,260)
+		self.colorButtonGreen.move(200,280)
 		self.colorButtonGroup.addButton(self.colorButtonGreen,3)
 		self.colorButtonGreen.clicked.connect(self.changeColor)
 
 		self.colorButtonBlue = QRadioButton('蓝',self)
-		self.colorButtonBlue.setFont(QFont("Microsoft YaHei",10))
-		self.colorButtonBlue.move(250,260)
+		self.colorButtonBlue.move(250,280)
 		self.colorButtonGroup.addButton(self.colorButtonBlue,4)
 		self.colorButtonBlue.clicked.connect(self.changeColor)
 
 		self.colorButtonPink = QRadioButton('粉',self)
-		self.colorButtonPink.setFont(QFont("Microsoft YaHei",10))
-		self.colorButtonPink.move(300,260)
+		self.colorButtonPink.move(300,280)
 		self.colorButtonGroup.addButton(self.colorButtonPink,5)
 		self.colorButtonPink.clicked.connect(self.changeColor)
 
@@ -235,26 +230,32 @@ class MainWindow(QMainWindow):
 	#创建标签
 	def createLabel(self):
 		self.connectStatusLabel = QLabel('当前状态: 未连接',self)
-		self.connectStatusLabel.setFont(QFont("Microsoft YaHei",10))
-		self.connectStatusLabel.move(85,120)
-		self.connectStatusLabel.setFixedSize(250,50)
+		self.connectStatusLabel.setAlignment(QtCore.Qt.AlignCenter)
+		self.connectStatusLabel.setStyleSheet("font-size:20px")
+		self.connectStatusLabel.move(50,120)
+		self.connectStatusLabel.setFixedSize(200,50)
 
 		self.tranLabel = QLabel('弹幕透明度',self)
-		self.tranLabel.setFont(QFont("Microsoft YaHei",12))
+		self.tranLabel.setStyleSheet("font-size:20px")
 		self.tranLabel.move(300,30)
 
 		self.tranMin = QLabel('全透明',self)
-		self.tranMin.setFont(QFont("Microsoft YaHei",8))
+		self.tranMin.setStyleSheet("font-size:15px")
 		self.tranMin.move(300,57)
 
 		self.tranMax = QLabel('不透明',self)
-		self.tranMax.setFont(QFont("Microsoft YaHei",8))
 		self.tranMax.move(507,57)
 
 		self.testLabel = QLabel('弹幕:',self)
-		self.testLabel.setFont(QFont("Microsoft YaHei",10))
-		self.testLabel.setFixedSize(100,25)
-		self.testLabel.move(50,230)
+		self.testLabel.setStyleSheet("font-size:25px")
+		self.testLabel.setFixedSize(70,25)
+		self.testLabel.move(50,250)
+
+		self.introLabel = QLabel(self)
+		self.introLabel.setStyleSheet("font-size:15px;border:1px solid black")
+		self.introLabel.setText("1.点击连接服务器按钮\n连接服务器\n2.点击创建按钮或加入\n按钮加入房间\n3.邀请小伙伴进入你的\n房间\n4.开始愉快的弹幕之旅\n吧！")
+		self.introLabel.move(265,95)
+		self.introLabel.setFixedSize(160,140)
 
 		self.wxLabel = QLabel(self)
 		self.wxLabel.setFixedSize(160,160)
@@ -266,9 +267,8 @@ class MainWindow(QMainWindow):
 	#创建文本框
 	def createText(self):
 		self.testText = QLineEdit(self)
-		self.testText.setFont(QFont("Microsoft YaHei",10))
 		self.testText.setFixedSize(200,25)
-		self.testText.move(140,230)
+		self.testText.move(120,250)
 		self.testText.setEnabled(False)
 		self.testText.returnPressed.connect(self.sendDanmu)
 
@@ -297,7 +297,7 @@ class MainWindow(QMainWindow):
 		
 	def connectingServer(self):
 		try:
-			self.ws = WebSocket('ws://127.0.0.1:8000/connect',self)
+			self.ws = WebSocket('ws://www.fengdoes.cn/connect',self)
 			self.ws.connect()
 			self.connectStatusLabel.setText('当前状态:已连接')
 			self.connectButton.setEnabled(False)
@@ -385,7 +385,11 @@ def toTop():
 
 
 app = QApplication(sys.argv)
-
+nindex = QFontDatabase.addApplicationFont("./src/myfont.ttf")
+if nindex!=-1:
+	fontName = QFontDatabase.applicationFontFamilies(0)[0]
+	fontThis = QFont(fontName,10)
+	app.setFont(fontThis)
 #每100毫秒将窗口置顶一次
 timer = QTimer()
 timer.timeout.connect(toTop)

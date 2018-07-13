@@ -23,3 +23,19 @@ background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #bcbcbc, 
 QSlider::sub-page:horizontal{                               
  background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #439cf3, stop:0.25 #439cf3, stop:0.5 #439cf3, stop:1 #439cf3);                     
 }
+
+QPushButton{
+	border-radius: 10px;
+	color: white;
+	background-color: rgb(30,144,255);
+	font-size: 20px;
+}
+QPushButton:hover{
+	background-color: rgb(135,206,235);
+}
+QPushButton:!enabled{
+	background-color: rgb(135,206,235);
+}
+QPushButton#connectButton{
+	font-size: 25px;
+}

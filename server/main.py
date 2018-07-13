@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
@@ -10,7 +11,7 @@ from tornado.web import RequestHandler
 from tornado.options import define, options
 from tornado.websocket import WebSocketHandler
 
-define("port", default=8000, type=int)
+define("port", default=80, type=int)
 
 class connectHandler(WebSocketHandler):
 
@@ -113,7 +114,7 @@ class sendHandler(RequestHandler):
             self.write("err")
 
 if __name__ == '__main__':
-    print('Start service at port: 8000')
+    print('Start service')
     tornado.options.parse_command_line()
     app = tornado.web.Application([
             (r"/connect", connectHandler),
