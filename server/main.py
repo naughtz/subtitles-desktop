@@ -11,7 +11,7 @@ from tornado.web import RequestHandler
 from tornado.options import define, options
 from tornado.websocket import WebSocketHandler
 
-define("port", default=80, type=int)
+define("port", default=443, type=int)
 
 class connectHandler(WebSocketHandler):
 
@@ -103,6 +103,8 @@ class connectHandler(WebSocketHandler):
         return True  # 允许WebSocket的跨域请求
 
 class sendHandler(RequestHandler):
+    def get(self):
+        self.write('ok')
     def post(self):
         try:
             info = self.request.body
@@ -124,6 +126,10 @@ if __name__ == '__main__':
         template_path = os.path.join(os.path.dirname(__file__), "template"),
         debug = True
         )
-    http_server = tornado.httpserver.HTTPServer(app)
+    ssl_options = {
+            "certfile": os.path.join(os.path.abspath("."), "server.crt"),
+            "keyfile": os.path.join(os.path.abspath("."), "server.key"),
+        }
+    http_server = tornado.httpserver.HTTPServer(app,ssl_options=ssl_options)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.current().start()

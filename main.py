@@ -297,7 +297,7 @@ class MainWindow(QMainWindow):
 		
 	def connectingServer(self):
 		try:
-			self.ws = WebSocket('ws://www.fengdoes.cn/connect',self)
+			self.ws = WebSocket('wss://www.fengdoes.cn/connect',self)
 			self.ws.connect()
 			self.connectStatusLabel.setText('当前状态:已连接')
 			self.connectButton.setEnabled(False)
