@@ -73,6 +73,12 @@ class connectHandler(WebSocketHandler):
                 message = json.dumps(message)
                 for client in self.rooms[room]:
                     client.write_message(message)
+        elif content['type']=='heartbeat':
+            message = {
+                'type': 'heartbeat',
+                }
+            message = json.dumps(message)
+            self.write_message(message)
 
     def on_close(self):
         self.all_clients.remove(self)
